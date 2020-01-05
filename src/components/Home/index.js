@@ -14,11 +14,19 @@ class Home extends React.Component {
 
     getCharacters = (page, name) => {
         getCharacterInfo(page, name).then((data)=> {
-            this.previousPage = (data.info.prev) && (data.info.prev).split('page=')[1].split('&')[0];
-            this.nextPage = (data.info.next) && (data.info.next).split('page=')[1].split('&')[0];
-            this.setState({
-                characters: data.results
-            })
+            if(data.isAxiosError) {
+                this.previousPage = null;
+                this.nextPage = null;
+                this.setState({
+                    characters: []
+                })
+            } else {
+                this.previousPage = (data.info.prev) && (data.info.prev).split('page=')[1].split('&')[0];
+                this.nextPage = (data.info.next) && (data.info.next).split('page=')[1].split('&')[0];
+                this.setState({
+                    characters: data.results
+                })
+            }
         })
     }
 
@@ -74,15 +82,17 @@ class Home extends React.Component {
                 </div>
 
                 <div className="home-main-container">
-                    {this.state.characters.length > 0 && this.state.characters.map((item, key) => {
+                   { this.state.characters.length > 0 ? (this.state.characters.map((item, key) => {
                         return <Character item={item} key={key}/>
-                    })}
+                    })):(
+                        <h2>No Characters Found!!</h2>
+                    )}
                 </div>
 
-                <div className="home-util-bar">
+                {(this.previousPage || this.nextPage) && (<div className="home-util-bar">
                     {this.previousPage && <button className="btn-style" onClick={() => this.getPreviousCharacters()}>Previous</button>}
                     {this.nextPage && <button className="btn-style" onClick={() => this.getNextCharacters()}>Next</button>}
-                </div>
+                </div>)}
             </div>
 
         )

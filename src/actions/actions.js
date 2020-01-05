@@ -10,5 +10,5 @@ export const getCharacterInfo = (page,name) => {
         }
     }).then((data) => {
         return data.data;
-    })
+    }, (err) => {return err})
 }
