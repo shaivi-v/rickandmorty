@@ -1,9 +1,8 @@
 {
   "MyPost": {
     "title": "string",
-    "views": "int",
-    "published": "boolean",
-    "createdAt": "date",
+    "image": "string",
+    "rating": "int",
     "comments": "Comment[]"
   },
   "MyComment": {
